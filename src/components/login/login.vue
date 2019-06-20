@@ -19,7 +19,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" class="mybtn" @click="login('userObj')">登录</el-button>
+          <el-button type="primary" class="mybtn" @click.prevent="login('userObj')">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -62,7 +62,7 @@ export default {
                   message: meta.msg,
                   type: "success"
                 });
-                // this.$router.push("/")
+                this.$router.push("/");
               } else {
                 this.$message.error(meta.msg);
               }
