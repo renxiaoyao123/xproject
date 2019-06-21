@@ -1,5 +1,6 @@
 <template>
   <el-container class="home">
+    <!-- 头部 -->
     <el-header>
       <el-row>
         <el-col :span="4">
@@ -19,15 +20,61 @@
         </el-col>
       </el-row>
     </el-header>
+
     <el-container class="mybody">
-      <el-aside width="200px">Aside</el-aside>
-      <el-main>Main</el-main>
+      <!-- 侧栏 -->
+      <el-aside width="200px">
+        <el-menu class="el-menu-vertical-demo" :unique-opened="true" :router="true">
+          <el-submenu v-for="(role,index) in roles" :key="role.id" :index="index +''">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>{{role.authName}}</span>
+            </template>
+            <el-menu-item
+              v-for="subRole in role.children"
+              :key="subRole.id"
+              :index="'/' + subRole.path"
+            >
+              <i class="el-icon-menu"></i>
+              <span>{{ subRole.authName }}</span>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+
+      <!-- 页面主体 -->
+      <el-main>
+        <!-- Main -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      roles: []
+    };
+  },
+  mounted() {
+    this.$http({
+      method: "get",
+      url: "http://localhost:8888/api/private/v1/menus",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjozMCwiaWF0IjoxNTYxMDI1MDAxLCJleHAiOjE1NjExMTE0MDF9.qwmMWUmDtJAZ-AJxKvbTa_Ji0BFvDT2fiMyN6b6W14w"
+      }
+    }).then(res => {
+      console.log(res);
+      if (res.data.meta.status === 200) {
+        this.roles = res.data.data;
+        // console.log(this.roles);
+      }
+    });
+  }
+};
 </script>
 
 <style>
@@ -41,7 +88,7 @@ export default {};
 .el-aside {
   background-color: #d3dce6;
   color: #333;
-  text-align: center;
+  /* text-align: center; */
   line-height: 200px;
 }
 
@@ -64,5 +111,9 @@ export default {};
   text-decoration: none;
   color: gold;
   float: right;
+}
+.el-menu {
+  width: 200px;
+  height: 100%;
 }
 </style>

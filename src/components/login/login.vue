@@ -53,15 +53,16 @@ export default {
             data: this.userObj
           })
             .then(res => {
-              console.log(res);
+              //   console.log(res);
               let { data, meta } = res.data;
-              console.log(meta);
+              //   console.log(meta);
 
               if (meta.status === 200) {
                 this.$message({
                   message: meta.msg,
                   type: "success"
                 });
+                window.localStorage.setItem("token", data.token);
                 this.$router.push("/");
               } else {
                 this.$message.error(meta.msg);
