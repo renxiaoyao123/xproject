@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     login() {
+      //对整个表单进行校验的方法，参数为一个回调函数。
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.$http({
