@@ -23,15 +23,10 @@ export default {
   mounted() {
     this.$http({
       method: "get",
-      url: "http://localhost:8888/api/private/v1/menus",
-      headers: {
-        Authorization: window.localStorage.getItem("token")
-      }
+      url: "menus"
     }).then(res => {
-      //   console.log(res);
       if (res.data.meta.status === 200) {
         this.roles = res.data.data;
-        // console.log(this.roles);
       }
     });
   }
